@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>Land Intelligence System | AI-Powered Land Analysis</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Outfit', system-ui, sans-serif;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: #0f172a;
+      }
+      .container {
+        text-align: center;
+        max-width: 600px;
+        padding: 2rem;
+      }
+      .logo-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+        margin: 0 auto 2rem;
+      }
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: #0f172a;
+      }
+      .subtitle {
+        font-size: 1.2rem;
+        color: #475569;
+        margin-bottom: 2rem;
+      }
+      .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .nav-btn {
+        padding: 1.25rem;
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #334155;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s;
+        cursor: pointer;
+        display: block;
+      }
+      .nav-btn:hover {
+        border-color: #22c55e;
+        color: #22c55e;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(34, 197, 94, 0.15);
+      }
+      .nav-btn.primary {
+        background: #22c55e;
+        color: white;
+        border-color: #22c55e;
+      }
+      .nav-btn.primary:hover {
+        background: #16a34a;
+        border-color: #16a34a;
+        box-shadow: 0 8px 16px rgba(34, 197, 94, 0.3);
+      }
+      .cta-text {
+        color: #475569;
+        font-size: 0.95rem;
+        margin-top: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo-icon">🌍</div>
+      <h1>Land Intelligence System</h1>
+      <p class="subtitle">AI-Powered Land Analysis Dashboard</p>
+      
+      <div class="nav-grid">
+        <a href="/landing.html" class="nav-btn">Landing</a>
+        <a href="/dashboard.html" class="nav-btn primary">Dashboard</a>
+        <a href="/features.html" class="nav-btn">Features</a>
+        <a href="/about.html" class="nav-btn">About</a>
+        <a href="/report.html" class="nav-btn">Reports</a>
+      </div>
+      
+      <p class="cta-text">Welcome! Start by exploring the dashboard or learn more about our features.</p>
+    </div>
+  </body>
+</html>

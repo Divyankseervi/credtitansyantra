@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | Land Intelligence System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #22c55e;
+            --primary-dark: #16a34a;
+            --surface-50: #f8fafc;
+            --surface-100: #f1f5f9;
+            --surface-200: #e2e8f0;
+            --surface-300: #cbd5e1;
+            --surface-600: #475569;
+            --surface-700: #334155;
+            --surface-800: #1e293b;
+            --surface-900: #0f172a;
+        }
+
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--surface-50);
+            color: var(--surface-900);
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--surface-200);
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--surface-900);
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--surface-600);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--surface-700);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 0.625rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--surface-900), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.25rem;
+            color: var(--surface-600);
+        }
+
+        .feature-detail {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--surface-200);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .feature-detail:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .feature-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon-large {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #d1fae5, #ecfdf5);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .feature-detail h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--surface-900);
+        }
+
+        .feature-detail p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--surface-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--surface-50);
+            border-radius: 10px;
+        }
+
+        .benefit-icon {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .benefit-text {
+            flex: 1;
+        }
+
+        .benefit-text strong {
+            color: var(--surface-900);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .benefit-text span {
+            color: var(--surface-600);
+            font-size: 0.875rem;
+        }
+
+        footer {
+            background: var(--surface-900);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .feature-detail {
+                padding: 2rem;
+            }
+
+            .feature-detail-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">🗺️</div>
+                <div class="logo-text">
+                    <h1>Land Intelligence</h1>
+                    <p>AI-Powered Analysis</p>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="landing.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="features.html" class="active">Features</a>
+                <a href="about.html">About</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Powerful Features</h1>
+            <p>Everything you need for comprehensive land analysis</p>
+        </div>
+
+        <div class="feature-detail">
+            <div class="feature-detail-header">
+                <div class="feature-icon-large">🗺️</div>
+                <h2>Interactive Maps</h2>
+            </div>
+            <p>Draw precise polygons on satellite or street view maps to select land parcels. Our intuitive drawing tools make it easy to mark boundaries and analyze specific areas with pixel-perfect accuracy.</p>
+            <div class="feature-benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Satellite & Street View</strong>
+                        <span>Switch between map types instantly</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Precise Drawing</strong>
+                        <span>Polygon tools with area calculation</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Edit & Delete</strong>
+                        <span>Modify selections easily</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-detail">
+            <div class="feature-detail-header">
+                <div class="feature-icon-large">🌿</div>
+                <h2>NDVI Analysis</h2>
+            </div>
+            <p>Get real-time Normalized Difference Vegetation Index scores to assess vegetation health. Perfect for agricultural monitoring, forest management, and environmental assessment.</p>
+            <div class="feature-benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Real-time Scores</strong>
+                        <span>Instant vegetation health metrics</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Visual Overlay</strong>
+                        <span>NDVI visualization on maps</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Agricultural Insights</strong>
+                        <span>Optimize crop planning</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-detail">
+            <div class="feature-detail-header">
+                <div class="feature-icon-large">⚠️</div>
+                <h2>Risk Assessment</h2>
+            </div>
+            <p>Comprehensive flood and drought risk analysis with color-coded indicators. Make informed decisions about land use with detailed risk metrics and historical data.</p>
+            <div class="feature-benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Flood Risk</strong>
+                        <span>Water level and flood zone analysis</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Drought Risk</strong>
+                        <span>Water scarcity and drought indicators</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Color-coded Alerts</strong>
+                        <span>Quick visual risk assessment</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-detail">
+            <div class="feature-detail-header">
+                <div class="feature-icon-large">🪴</div>
+                <h2>Soil Health</h2>
+            </div>
+            <p>Detailed soil health metrics and recommendations for optimal land use. Understand soil composition, fertility, and suitability for different agricultural purposes.</p>
+            <div class="feature-benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Health Scores</strong>
+                        <span>Comprehensive soil quality metrics</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Composition Analysis</strong>
+                        <span>Nutrient and mineral data</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Recommendations</strong>
+                        <span>Optimal crop suggestions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-detail">
+            <div class="feature-detail-header">
+                <div class="feature-icon-large">📊</div>
+                <h2>Change Detection</h2>
+            </div>
+            <p>Track land use changes over time with historical comparison data. Monitor deforestation, urbanization, agricultural expansion, and environmental changes.</p>
+            <div class="feature-benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Historical Data</strong>
+                        <span>Compare changes over time</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Trend Analysis</strong>
+                        <span>Identify patterns and changes</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Alerts</strong>
+                        <span>Get notified of significant changes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-detail">
+            <div class="feature-detail-header">
+                <div class="feature-icon-large">🎯</div>
+                <h2>Trust Score</h2>
+            </div>
+            <p>AI-generated trust score based on multiple data sources and analysis quality. Understand the reliability and confidence level of each analysis.</p>
+            <div class="feature-benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Multi-source Data</strong>
+                        <span>Combined satellite and sensor data</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Quality Metrics</strong>
+                        <span>Data accuracy indicators</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">✓</span>
+                    <div class="benefit-text">
+                        <strong>Confidence Levels</strong>
+                        <span>Reliability scoring system</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="landing.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="features.html">Features</a>
+                <a href="about.html">About</a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 Land Intelligence System. Built for Hackathon.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

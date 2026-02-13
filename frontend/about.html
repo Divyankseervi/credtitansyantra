@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Land Intelligence System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #22c55e;
+            --primary-dark: #16a34a;
+            --surface-50: #f8fafc;
+            --surface-100: #f1f5f9;
+            --surface-200: #e2e8f0;
+            --surface-300: #cbd5e1;
+            --surface-600: #475569;
+            --surface-700: #334155;
+            --surface-800: #1e293b;
+            --surface-900: #0f172a;
+        }
+
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--surface-50);
+            color: var(--surface-900);
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--surface-200);
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--surface-900);
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--surface-600);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--surface-700);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--surface-900), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.25rem;
+            color: var(--surface-600);
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--surface-200);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--surface-900);
+            margin-bottom: 1rem;
+        }
+
+        .content-section p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--surface-600);
+            margin-bottom: 1rem;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            padding: 1rem;
+            background: var(--surface-50);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .tech-item strong {
+            display: block;
+            color: var(--surface-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .tech-item span {
+            color: var(--surface-600);
+            font-size: 0.875rem;
+        }
+
+        footer {
+            background: var(--surface-900);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .content-section {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">🗺️</div>
+                <div class="logo-text">
+                    <h1>Land Intelligence</h1>
+                    <p>AI-Powered Analysis</p>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="landing.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="features.html">Features</a>
+                <a href="about.html" class="active">About</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>About Land Intelligence</h1>
+            <p>Revolutionizing land analysis with AI-powered insights</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Our Mission</h2>
+            <p>
+                Land Intelligence System is designed to democratize access to advanced land analysis tools. 
+                Whether you're a farmer planning your next crop, a developer evaluating a site, or an 
+                environmental researcher studying land use changes, our platform provides instant, 
+                AI-powered insights to help you make informed decisions.
+            </p>
+            <p>
+                We combine satellite imagery, machine learning, and comprehensive data sources to deliver 
+                accurate, actionable intelligence about any piece of land on Earth.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>How It Works</h2>
+            <p>
+                Simply select a land parcel on our interactive map by drawing a polygon. Our AI system 
+                then analyzes multiple data sources including satellite imagery, weather patterns, soil 
+                databases, and historical records to provide comprehensive insights.
+            </p>
+            <p>
+                Within seconds, you receive detailed information about vegetation health (NDVI), flood and 
+                drought risks, soil quality, land use changes, and an overall trust score indicating the 
+                reliability of the analysis.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Technology Stack</h2>
+            <p>Built with modern web technologies for performance and reliability:</p>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>React</strong>
+                    <span>Frontend Framework</span>
+                </div>
+                <div class="tech-item">
+                    <strong>Leaflet</strong>
+                    <span>Interactive Maps</span>
+                </div>
+                <div class="tech-item">
+                    <strong>AI/ML</strong>
+                    <span>Analysis Engine</span>
+                </div>
+                <div class="tech-item">
+                    <strong>Satellite Data</strong>
+                    <span>Imagery Sources</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Use Cases</h2>
+            <p><strong>Agriculture:</strong> Optimize crop planning, monitor field health, and assess soil quality.</p>
+            <p><strong>Real Estate:</strong> Evaluate properties, assess environmental risks, and understand land value.</p>
+            <p><strong>Environmental Research:</strong> Track deforestation, monitor ecosystem changes, and study land use patterns.</p>
+            <p><strong>Urban Planning:</strong> Analyze development sites, assess infrastructure needs, and plan sustainable growth.</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="landing.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="features.html">Features</a>
+                <a href="about.html">About</a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 Land Intelligence System. Built for Hackathon.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

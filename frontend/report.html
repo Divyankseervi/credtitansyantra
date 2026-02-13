@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Report | Land Intelligence System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #22c55e;
+            --primary-dark: #16a34a;
+            --surface-50: #f8fafc;
+            --surface-100: #f1f5f9;
+            --surface-200: #e2e8f0;
+            --surface-600: #475569;
+            --surface-800: #1e293b;
+            --surface-900: #0f172a;
+        }
+
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--surface-50);
+            color: var(--surface-900);
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--surface-200);
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--surface-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--surface-900);
+        }
+
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--surface-600);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--surface-700);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-left: 1.25rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.95rem;
+            color: var(--surface-600);
+        }
+
+        .coords-badge {
+            margin-top: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid var(--surface-200);
+            background: white;
+            font-size: 0.8rem;
+            color: var(--surface-700);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1.1fr;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid var(--surface-200);
+            padding: 1.5rem;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--surface-600);
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .tag {
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            background: var(--surface-100);
+            font-size: 0.8rem;
+            color: var(--surface-700);
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.75rem;
+            margin-bottom: 0.35rem;
+            color: var(--surface-800);
+        }
+
+        .list {
+            font-size: 0.9rem;
+            color: var(--surface-600);
+            padding-left: 1rem;
+        }
+
+        .list li {
+            margin-bottom: 0.3rem;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+        }
+
+        .pill.good {
+            background: #ecfdf3;
+            color: #15803d;
+        }
+
+        .pill.medium {
+            background: #fef7e5;
+            color: #92400e;
+        }
+
+        .pill.bad {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .btn-row {
+            margin-top: 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.4rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--surface-800);
+            padding: 0.6rem 1.4rem;
+            border-radius: 999px;
+            border: 1px solid var(--surface-200);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding-inline: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">🗺️</div>
+                <div class="logo-text">
+                    <h1>Land Intelligence</h1>
+                    <p>Land report (mock)</p>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="landing.html">Home</a>
+                <a href="dashboard.html">Dashboard</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1 class="page-title">Agricultural Land Report</h1>
+            <p class="page-subtitle">
+                This is a static sample report. When your backend is ready, this page can render real AI outputs
+                based on the polygon and centroid selected in the dashboard.
+            </p>
+            <div class="coords-badge" id="coordsBadge" style="display:none;"></div>
+        </div>
+
+        <div class="grid">
+            <section class="card">
+                <h2>1. Automated satellite imagery (coming soon)</h2>
+                <p>
+                    This module will fetch the most recent cloud-filtered satellite imagery for the selected land
+                    boundary. You could plug in Sentinel/Landsat, commercial providers, or your own tiles here.
+                </p>
+                <div class="section-title">Planned outputs</div>
+                <ul class="list">
+                    <li>Latest true-color and NDVI tiles for the polygon.</li>
+                    <li>Cloud-free mosaic over the last 30 days.</li>
+                    <li>Download links for high-resolution imagery.</li>
+                </ul>
+                <div class="tag-row">
+                    <span class="tag">Imagery provider API</span>
+                    <span class="tag">Tile rendering</span>
+                    <span class="tag">Cloud masking</span>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>2. Vegetation health & suitability</h2>
+                <p>
+                    Based on NDVI and soil health scores from the dashboard, this module can summarise vegetation
+                    vigour and suggest suitable crop groups.
+                </p>
+                <div class="section-title">Example summary</div>
+                <p>
+                    Overall vegetation health is <span class="pill good">good</span> with NDVI in the 0.7–0.8 range.
+                    Soil condition is <span class="pill medium">moderate</span>, suitable for cereals and pulses with
+                    targeted nutrient management.
+                </p>
+                <div class="section-title">Crop suitability (mock)</div>
+                <ul class="list">
+                    <li>Cereals: wheat, maize, sorghum.</li>
+                    <li>Pulses: lentils, chickpea.</li>
+                    <li>Supporting crops: green manure / cover crops in low areas.</li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>3. Historical vs current monitoring</h2>
+                <p>
+                    Here you can plug in a time-series service to compare historical NDVI and land-use changes
+                    against the current snapshot.
+                </p>
+                <div class="section-title">Planned metrics</div>
+                <ul class="list">
+                    <li>NDVI trend over the last 12–24 months.</li>
+                    <li>Deforestation / vegetation loss flags.</li>
+                    <li>Seasonality curves for crop growth.</li>
+                </ul>
+                <div class="tag-row">
+                    <span class="tag">Time-series NDVI</span>
+                    <span class="tag">Change detection</span>
+                    <span class="tag">Alerts</span>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>4. Report delivery</h2>
+                <p>
+                    This section can be wired to generate a downloadable PDF, shareable link, or to save reports
+                    back into Supabase for later review.
+                </p>
+                <div class="section-title">Next steps (backend side)</div>
+                <ul class="list">
+                    <li>Accept polygon/centroid from dashboard and run full analysis.</li>
+                    <li>Persist results into <code>land_records</code> with report metadata.</li>
+                    <li>Expose a REST/GraphQL endpoint for this page to consume.</li>
+                </ul>
+                <div class="btn-row">
+                    <a class="btn-primary" href="dashboard.html">Back to dashboard</a>
+                    <a class="btn-secondary" href="landing.html">Back to landing</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Read lat/lon from query string just to show they are wired through.
+        const params = new URLSearchParams(window.location.search);
+        const lat = params.get('lat');
+        const lon = params.get('lon');
+        const badge = document.getElementById('coordsBadge');
+        if (lat && lon && badge) {
+            badge.style.display = 'inline-flex';
+            badge.textContent = `Selected centroid · lat ${Number(lat).toFixed(4)}, lon ${Number(lon).toFixed(4)}`;
+        }
+    </script>
+</body>
+</html>
+
