@@ -1,0 +1,16 @@
+{
+  "name": "roi-intelligence-backend",
+  "version": "1.0.0",
+  "description": "ROI Intelligence Engine - Land ROI + AI Advisor",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
+}
