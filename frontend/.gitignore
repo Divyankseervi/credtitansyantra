@@ -1,0 +1,85 @@
+# =========================
+# Node / React
+# =========================
+node_modules/
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# =========================
+# Environment Files
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Python (Safety Module)
+# =========================
+Safety/venv/
+Safety/.venv/
+Safety/__pycache__/
+Safety/*.pyc
+Safety/.pytest_cache/
+
+# =========================
+# General Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Testing / Coverage
+# =========================
+coverage/
+htmlcov/
+
+# =========================
+# Temp Files
+# =========================
+*.tmp
+*.swp
+
+# =========================
+# Build Artifacts
+# =========================
+*.out
+*.pid
+
+# =========================
+# Deployment
+# =========================
+.vercel/
+.netlify/
+
+# =========================
+# Keep These
+# =========================
+!Safety/requirements.txt
+!Safety/main.py
+!.env.example
