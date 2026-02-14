@@ -1,19 +1,19 @@
 # Node
 node_modules/
-frontend/node_modules/
-
-# Vite cache
-.vite/
+dist/
+.env
 
 # Python
 venv/
-env/
 __pycache__/
 *.pyc
 
-# Build
-dist/
-build/
+# Vite
+frontend/node_modules/
+frontend/dist/
 
-# Env
-.env
+# ROI backend
+roi-intelligence-engine/backend/node_modules/
+
+# OS
+.DS_Store
