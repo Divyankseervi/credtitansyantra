@@ -1,12 +1,27 @@
 from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from pathlib import Path
+import sys
 from classification.land_classifier import classify_land
 from change_detection.change_detector import detect_change
 from suitability.scoring import calculate_suitability
 from satellite_data.pipeline import get_land_data
 
 app = FastAPI()
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+SAFETY_DIR = BASE_DIR / "Safety"
+for path in (BASE_DIR, SAFETY_DIR):
+    path_str = str(path)
+    if path_str not in sys.path:
+        sys.path.append(path_str)
+
+from Safety.main import router as safety_router
+app.include_router(safety_router)
+
+from surroundings.main import router as surroundings_router
+app.include_router(surroundings_router)
 
 ALLOWED_ORIGINS = {
     "http://localhost:3000",

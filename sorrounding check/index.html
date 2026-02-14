@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Land Analyzer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            margin: 0;
+            background: -webkit-linear-gradient(#38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+        }
+        .container {
+            display: flex;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .panel {
+            background-color: #1e293b;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            flex: 1;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #94a3b8;
+        }
+        input {
+            width: 95%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background-color: #0f172a;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.8; }
+        .btn-blue { background-color: #3b82f6; color: white; }
+        .btn-purple { background-color: #8b5cf6; color: white; }
+        
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #result-text {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #0f172a;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>AI Land & Context Engine</h1>
+        <p>Multimodal PropTech Intelligence Dashboard</p>
+    </div>
+
+    <div class="container">
+        <div class="panel">
+            <h2>1. OpenStreetMap Radar (Macro)</h2>
+            <div class="input-group">
+                <label>Latitude</label>
+                <input type="text" id="lat" value="29.3289962">
+            </div>
+            <div class="input-group">
+                <label>Longitude</label>
+                <input type="text" id="lon" value="77.0455981">
+            </div>
+            <button class="btn-blue" onclick="fetchOSM()">Scan Map Coordinates</button>
+
+            <hr style="border-color: #334155; margin: 2rem 0;">
+
+            <h2>2. Gemini Vision AI (Micro)</h2>
+            <div class="input-group">
+                <label>Earth Engine / Satellite URL</label>
+                <input type="text" id="satUrl" placeholder="Paste your :getPixels image link here...">
+            </div>
+            <button class="btn-purple" onclick="fetchSatellite()">Analyze Image Link</button>
+        </div>
+
+        <div class="panel">
+            <h2 id="chart-title" style="text-align: center;">Land Use Breakdown</h2>
+            <div class="chart-container">
+                <canvas id="landChart"></canvas>
+            </div>
+            <div id="result-text">Waiting for analysis...</div>
+        </div>
+    </div>
+
+    <script>
+        let myChart = null;
+
+        // Central function to destroy old charts and draw a fresh Pie Chart
+        function drawChart(labels, dataArray, title) {
+            const ctx = document.getElementById('landChart').getContext('2d');
+            
+            // If a chart already exists, destroy it so the new one doesn't glitch
+            if (myChart !== null) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'doughnut', 
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataArray,
+                        backgroundColor: [
+                            '#10b981', '#3b82f6', '#f59e0b', '#ef4444', 
+                            '#8b5cf6', '#64748b', '#06b6d4'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#f8fafc' } },
+                        title: { display: false }
+                    }
+                }
+            });
+            
+            document.getElementById('chart-title').innerText = title;
+        }
+
+        // --- ENDPOINT 1: Fetch from OpenStreetMap Context Engine ---
+        async function fetchOSM() {
+            const lat = document.getElementById('lat').value;
+            const lon = document.getElementById('lon').value;
+            const resultBox = document.getElementById('result-text');
+            
+            resultBox.innerText = "Scanning 300m radius via OpenStreetMap...";
+            
+            try {
+                const response = await fetch(`http://127.0.0.1:5001/analyze-surroundings?lat=${lat}&lon=${lon}`);
+                const data = await response.json();
+                
+                // Format response text beautifully
+                resultBox.innerText = "DOMINANT ZONE: " + data.surroundings.dominant_zone + 
+                                      "\n" + data.surroundings.ai_context_summary;
+
+                // Extract data for the chart
+                const percentages = data.surroundings.area_profile_percentages;
+                const labels = Object.keys(percentages);
+                const values = Object.values(percentages);
+                
+                drawChart(labels, values, "OSM Geometric Data Profile");
+                
+            } catch (error) {
+                resultBox.innerText = "Error connecting to server. Is Uvicorn running on port 5001?";
+            }
+        }
+
+        // --- ENDPOINT 2: Fetch from Gemini AI Vision Engine ---
+        async function fetchSatellite() {
+            const url = document.getElementById('satUrl').value;
+            const resultBox = document.getElementById('result-text');
+            
+            if(!url) {
+                alert("Please paste a satellite image URL first!");
+                return;
+            }
+
+            resultBox.innerText = "Vision AI is looking at the satellite image. Please wait 3-5 seconds...";
+            
+            try {
+                const response = await fetch(`http://127.0.0.1:5001/analyze-satellite`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image_url: url })
+                });
+                
+                const data = await response.json();
+                
+                if (data.ai_vision_analysis.error) {
+                    resultBox.innerText = "Error: " + data.ai_vision_analysis.error;
+                    return;
+                }
+
+                // Format response text beautifully
+                const analysis = data.ai_vision_analysis;
+                resultBox.innerText = "DOMINANT ZONE: " + analysis.dominant_zone + 
+                                      " (Confidence: " + analysis.confidence_score_out_of_100 + "%)\n\n" + 
+                                      "AI EVIDENCE: " + analysis.visual_evidence;
+
+                // Extract data for the chart
+                const percentages = analysis.visual_percentages;
+                const labels = Object.keys(percentages);
+                const values = Object.values(percentages);
+                
+                drawChart(labels, values, "AI Vision Satellite Profile");
+                
+            } catch (error) {
+                resultBox.innerText = "Error connecting to backend.";
+            }
+        }
+    </script>
+</body>
+</html>

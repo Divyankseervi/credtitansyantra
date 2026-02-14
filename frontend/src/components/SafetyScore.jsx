@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import MapSelector from "./MapSelector";
 import { fetchSafetyScore, getSafetyBadgeStyle } from "../api/safetyService";
 
-export default function SafetyScore() {
+export default function SafetyScore({ initialCoordinates }) {
   // Map state
   const [selectedLand, setSelectedLand] = useState(null);
   const [isSatellite, setIsSatellite] = useState(false);
@@ -13,6 +13,33 @@ export default function SafetyScore() {
   const [safetyData, setSafetyData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Auto-fetch if initial coordinates provided
+  useEffect(() => {
+    if (initialCoordinates?.latitude && initialCoordinates?.longitude) {
+      handleAnalyzeWithCoordinates(
+        initialCoordinates.latitude,
+        initialCoordinates.longitude
+      );
+    }
+  }, [initialCoordinates]);
+
+  const handleAnalyzeWithCoordinates = async (lat, lon) => {
+    setIsLoading(true);
+    setError(null);
+    setSafetyData(null);
+
+    try {
+      const data = await fetchSafetyScore(lat, lon);
+      console.log("SAFETY API DATA:", data);
+      setSafetyData(data);
+    } catch (err) {
+      console.error("Error fetching safety score:", err);
+      setError(err?.message || "Failed to fetch safety score. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!selectedLand) {
@@ -34,19 +61,7 @@ export default function SafetyScore() {
       return;
     }
 
-    setIsLoading(true);
-    setError(null);
-    setSafetyData(null);
-
-    try {
-      const data = await fetchSafetyScore(centerLat, centerLon);
-      setSafetyData(data);
-    } catch (err) {
-      console.error("Error fetching safety score:", err);
-      setError(err?.message || "Failed to fetch safety score. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    await handleAnalyzeWithCoordinates(centerLat, centerLon);
   };
 
   return (
@@ -82,77 +97,108 @@ export default function SafetyScore() {
               </p>
             </div>
           </div>
+          {initialCoordinates && (
+            <button
+              onClick={() => window.location.href = '/safety-quick'}
+              className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-medium transition"
+            >
+              Try Different Coordinates
+            </button>
+          )}
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Layout: Map + Analysis Panel */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left: Map */}
-          <div className="lg:col-span-2 min-h-[400px] lg:min-h-[600px]">
-            <div className="bg-white rounded-lg shadow-card border border-gray-200 overflow-hidden h-full">
-              <MapSelector
-                selectedLand={selectedLand}
-                onLandSelect={setSelectedLand}
-                isSatellite={isSatellite}
-                onSatelliteToggle={() => setIsSatellite((s) => !s)}
-                showNDVI={showNDVI}
-                onNDVIToggle={() => setShowNDVI((s) => !s)}
-                isAnalyzing={isLoading}
-              />
+        {/* Layout: Map + Analysis Panel OR Just Analysis if using initial coordinates */}
+        <div className={`grid gap-6 ${initialCoordinates ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'}`}>
+          {/* Left: Map - Only show if not using initial coordinates */}
+          {!initialCoordinates && (
+            <div className="lg:col-span-2 min-h-[400px] lg:min-h-[600px]">
+              <div className="bg-white rounded-lg shadow-card border border-gray-200 overflow-hidden h-full">
+                <MapSelector
+                  selectedLand={selectedLand}
+                  onLandSelect={setSelectedLand}
+                  isSatellite={isSatellite}
+                  onSatelliteToggle={() => setIsSatellite((s) => !s)}
+                  showNDVI={showNDVI}
+                  onNDVIToggle={() => setShowNDVI((s) => !s)}
+                  isAnalyzing={isLoading}
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Right Column: Analysis Panel */}
-          <div className="lg:col-span-1 space-y-4">
-            {/* Input Card */}
-            <div className="bg-white rounded-lg shadow-card border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                🛡️ Safety Analysis
-              </h2>
+          <div className={`lg:col-span-1 space-y-4 ${initialCoordinates && initialCoordinates?.latitude ? 'max-w-3xl mx-auto w-full' : ''}`}>
+            {/* Input Card - Only show if not using initial coordinates */}
+            {!initialCoordinates && (
+              <div className="bg-white rounded-lg shadow-card border border-gray-200 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  🛡️ Safety Analysis
+                </h2>
 
-              {/* Analyze Button */}
-              <button
-                onClick={handleAnalyze}
-                disabled={!selectedLand || isLoading}
-                className={`w-full px-4 py-3 rounded-lg font-semibold transition ${
-                  !selectedLand || isLoading
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-red-600 hover:bg-red-700 text-white shadow-md hover:shadow-lg"
-                }`}
-              >
-                {isLoading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
-                    Analyzing...
-                  </span>
-                ) : (
-                  "🔍 Analyze Safety"
+                {/* Analyze Button */}
+                <button
+                  onClick={handleAnalyze}
+                  disabled={!selectedLand || isLoading}
+                  className={`w-full px-4 py-3 rounded-lg font-semibold transition ${
+                    !selectedLand || isLoading
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-red-600 hover:bg-red-700 text-white shadow-md hover:shadow-lg"
+                  }`}
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
+                      Analyzing...
+                    </span>
+                  ) : (
+                    "🔍 Analyze Safety"
+                  )}
+                </button>
+
+                {error && (
+                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-sm text-red-700">⚠️ {error}</p>
+                  </div>
                 )}
-              </button>
 
-              {error && (
-                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                {selectedLand && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-xs text-blue-800">
+                      <strong>📍 Selected Area:</strong>
+                      <br />
+                      {selectedLand.coordinates?.center && (
+                        <>
+                          {selectedLand.coordinates.center.lat.toFixed(4)},{" "}
+                          {selectedLand.coordinates.center.lng.toFixed(4)}
+                        </>
+                      )}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Error/Loading for initial coordinates */}
+            {initialCoordinates && error && (
+              <div className="bg-white rounded-lg shadow-card border border-gray-200 p-6">
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
                   <p className="text-sm text-red-700">⚠️ {error}</p>
                 </div>
-              )}
+              </div>
+            )}
 
-              {selectedLand && (
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-xs text-blue-800">
-                    <strong>📍 Selected Area:</strong>
-                    <br />
-                    {selectedLand.coordinates?.center && (
-                      <>
-                        {selectedLand.coordinates.center.lat.toFixed(4)},{" "}
-                        {selectedLand.coordinates.center.lng.toFixed(4)}
-                      </>
-                    )}
-                  </p>
+            {/* Loading indicator for initial coordinates */}
+            {initialCoordinates && isLoading && (
+              <div className="bg-white rounded-lg shadow-card border border-gray-200 p-6 text-center">
+                <div className="flex items-center justify-center gap-3">
+                  <span className="animate-spin rounded-full h-6 w-6 border-b-2 border-red-500"></span>
+                  <span className="font-semibold text-gray-700">Analyzing safety data...</span>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Results Card */}
             {safetyData && (
@@ -225,6 +271,25 @@ export default function SafetyScore() {
                     </p>
                   </div>
 
+                  {safetyData.summary?.fire_stations > 0 && (
+                    <div className="bg-red-50 p-3 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xl">🚒</span>
+                          <span className="text-sm font-medium text-gray-700">
+                            Fire Stations
+                          </span>
+                        </div>
+                        <span className="text-lg font-bold text-red-700">
+                          {safetyData.summary.fire_stations}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Within 1.5km radius
+                      </p>
+                    </div>
+                  )}
+
                   <div className="bg-orange-50 p-3 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -280,6 +345,122 @@ export default function SafetyScore() {
               </div>
             )}
 
+            {/* Neighborhood Places List */}
+            {safetyData?.places && (
+              <div className="bg-white rounded-lg shadow-card border border-gray-200 p-6 space-y-4">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  🏘️ Neighborhood Places Found
+                </h2>
+                
+                {/* Summary Stats */}
+                {safetyData.summary && (
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    {Object.entries(safetyData.summary).map(([key, count]) => {
+                      const icons = {
+                        police_stations: "🚓",
+                        hospitals: "🏥",
+                        fire_stations: "🚒",
+                        schools: "🏫",
+                        banks: "🏦",
+                        atms: "🏧",
+                        pharmacies: "💊",
+                        restaurants: "🍽️",
+                        fuel_stations: "⛽",
+                        marketplaces: "🛒"
+                      };
+                      const labels = {
+                        police_stations: "Police",
+                        hospitals: "Hospitals",
+                        fire_stations: "Fire",
+                        schools: "Schools",
+                        banks: "Banks",
+                        atms: "ATMs",
+                        pharmacies: "Pharmacy",
+                        restaurants: "Restaurants",
+                        fuel_stations: "Fuel",
+                        marketplaces: "Markets"
+                      };
+                      return (
+                        <div key={key} className="bg-gray-50 p-2 rounded text-center">
+                          <div className="text-lg">{icons[key] || "📍"}</div>
+                          <div className="text-xs font-semibold text-gray-700">{count}</div>
+                          <div className="text-xs text-gray-500">{labels[key] || key}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Detailed Lists by Category */}
+                <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                  {Object.entries(safetyData.places).map(([category, places]) => {
+                    if (!places || places.length === 0) return null;
+                    
+                    const categoryIcons = {
+                      police_stations: "🚓",
+                      hospitals: "🏥",
+                      fire_stations: "🚒",
+                      schools: "🏫",
+                      banks: "🏦",
+                      atms: "🏧",
+                      pharmacies: "💊",
+                      restaurants: "🍽️",
+                      fuel_stations: "⛽",
+                      marketplaces: "🛒"
+                    };
+                    
+                    const categoryLabels = {
+                      police_stations: "Police Stations",
+                      hospitals: "Hospitals & Clinics",
+                      fire_stations: "Fire Stations",
+                      schools: "Schools & Universities",
+                      banks: "Banks",
+                      atms: "ATMs",
+                      pharmacies: "Pharmacies",
+                      restaurants: "Restaurants & Cafes",
+                      fuel_stations: "Fuel Stations",
+                      marketplaces: "Markets & Supermarkets"
+                    };
+
+                    return (
+                      <div key={category} className="border border-gray-200 rounded-lg p-3">
+                        <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                          <span className="text-lg">{categoryIcons[category] || "📍"}</span>
+                          <span>{categoryLabels[category] || category} ({places.length})</span>
+                        </h3>
+                        <div className="space-y-2 max-h-48 overflow-y-auto">
+                          {places.map((place, idx) => (
+                            <div
+                              key={idx}
+                              className="bg-gray-50 p-2 rounded text-sm"
+                            >
+                              <div className="font-medium text-gray-800">
+                                {place.name}
+                              </div>
+                              {place.address && (
+                                <div className="text-xs text-gray-600 mt-1">
+                                  {place.address}
+                                </div>
+                              )}
+                              <div className="text-xs text-gray-500 mt-1">
+                                📍 {place.distance}m away
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {safetyData.places && Object.values(safetyData.places).every(arr => !arr || arr.length === 0) && (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>No places found in the neighborhood within 1.5km radius.</p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Info Card */}
             <div className="bg-red-50 rounded-lg border border-red-200 p-4">
               <p className="text-xs text-red-800">
@@ -296,6 +477,15 @@ export default function SafetyScore() {
                 • Hospitals nearby
                 <br />
                 • Recent crime news
+                <br />
+                <br />
+                4. View detailed list of all places found:
+                <br />
+                • Police stations, hospitals, fire stations
+                <br />
+                • Schools, banks, ATMs, pharmacies
+                <br />
+                • Restaurants, fuel stations, markets
                 <br />
                 <br />
                 <strong>📊 Score Range:</strong>
