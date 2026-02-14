@@ -1,8 +1,15 @@
-node_modules
-dist
-dist-ssr
+# Node
+node_modules/
+frontend/node_modules/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Build
+dist/
+build/
+
+# Env files
 .env
-.env.local
-.vscode
-.DS_Store
-*.log

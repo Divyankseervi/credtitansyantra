@@ -1,14 +1,16 @@
-/**
- * App configuration.
- * Set USE_MOCK_API to false when backend is ready.
- */
 export const config = {
-  // Use mock data (no backend). Set to false when API is available.
-  USE_MOCK_API: true,
+  // ✅ Keep backend only
+  USE_MOCK_API: false,
 
-  // Backend base URL (used when USE_MOCK_API is false)
-  API_BASE: import.meta.env.VITE_API_URL || '/api',
+  // ✅ Your backend URL
+  API_BASE: "http://localhost:8000",
 
-  // Mock delay in ms (simulates network latency)
-  MOCK_DELAY_MS: 1800,
+  // ✅ Safety backend (same for now)
+  SAFETY_API_BASE: "http://localhost:8000",
+
+  // ✅ Required API keys structure (to prevent crash)
+  API_KEYS: {
+    OPENWEATHER_API_KEY: "",  // add key later
+    GEMINI_API_KEY: "",       // optional
+  },
 };

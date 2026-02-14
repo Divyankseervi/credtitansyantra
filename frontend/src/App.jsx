@@ -1,10 +1,187 @@
-import { useState } from 'react';
-import MapSelector from './components/MapSelector';
-import InsightsPanel from './components/InsightsPanel';
-import AnalyzeButton from './components/AnalyzeButton';
-import { analyzeLand } from './api';
+import { useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 
-export default function App() {
+import MapSelector from "./components/MapSelector";
+import InsightsPanel from "./components/InsightsPanel";
+import AnalyzeButton from "./components/AnalyzeButton";
+
+import VerifyLandUnified from "./components/VerifyLandUnified";
+import SurroundingsAnalysis from "./components/SurroundingsAnalysis";
+import SafetyScore from "./components/SafetyScore";
+
+import { analyzeLand } from "./api";
+import "./landing.css";
+
+/* ===========================
+   Landing Page
+=========================== */
+function Landing() {
+  return (
+    <div className="landing-page" id="top">
+      <header className="landing-header">
+        <nav>
+          <div className="logo">
+            <div className="logo-icon">LI</div>
+            <div className="logo-text">
+              <h1>Land Intelligence</h1>
+              <p>AI-Powered Analysis</p>
+            </div>
+          </div>
+
+          {/* ✅ MERGED NAVIGATION */}
+          <div className="nav-links">
+            <a href="#top">Home</a>
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+
+            <Link to="/verify-land" className="btn-secondary">
+              Verify Land
+            </Link>
+
+            <Link to="/surroundings" className="btn-secondary">
+              Surroundings
+            </Link>
+
+            <Link to="/dashboard" className="btn-primary">
+              Start Analyzing
+            </Link>
+          </div>
+        </nav>
+      </header>
+
+      <main className="landing-main">
+        <section className="page-header">
+          <h1>Land Intelligence System</h1>
+          <p>AI-Powered Land Analysis Dashboard</p>
+
+          <div className="hero-actions">
+            <Link to="/dashboard" className="btn-primary">
+              Start Analyzing
+            </Link>
+            <a href="#features" className="btn-secondary">Explore Features</a>
+          </div>
+        </section>
+
+        <section className="section-block" id="features">
+          <div className="page-header">
+            <h1>Powerful Features</h1>
+            <p>Everything you need for comprehensive land analysis</p>
+          </div>
+
+          <div className="feature-detail">
+            <div className="feature-detail-header">
+              <div className="feature-icon-large">MAP</div>
+              <h2>Interactive Maps</h2>
+            </div>
+            <p>
+              Draw precise polygons on satellite or street view maps to select land parcels.
+              Our intuitive drawing tools make it easy to mark boundaries and analyze specific
+              areas with pixel-perfect accuracy.
+            </p>
+          </div>
+
+          <div className="feature-detail">
+            <div className="feature-detail-header">
+              <div className="feature-icon-large">NDVI</div>
+              <h2>NDVI Analysis</h2>
+            </div>
+            <p>
+              Get real-time Normalized Difference Vegetation Index scores to assess vegetation
+              health. Perfect for agricultural monitoring, forest management, and environmental
+              assessment.
+            </p>
+          </div>
+
+          <div className="feature-detail">
+            <div className="feature-detail-header">
+              <div className="feature-icon-large">RISK</div>
+              <h2>Risk Assessment</h2>
+            </div>
+            <p>
+              Comprehensive flood and drought risk analysis with color-coded indicators. Make
+              informed decisions about land use with detailed risk metrics and historical data.
+            </p>
+          </div>
+
+          <div className="feature-detail">
+            <div className="feature-detail-header">
+              <div className="feature-icon-large">VERIFY</div>
+              <h2>Land Verification</h2>
+            </div>
+            <p>
+              Verify land records against satellite data and government databases.
+              Detect inconsistencies and ensure document authenticity.
+            </p>
+          </div>
+        </section>
+
+        <section className="section-block" id="about">
+          <div className="page-header">
+            <h1>About Land Intelligence</h1>
+            <p>Revolutionizing land analysis with AI-powered insights</p>
+          </div>
+
+          <div className="feature-detail">
+            <h2>Our Mission</h2>
+            <p>
+              Land Intelligence System is designed to democratize access to advanced land analysis
+              tools. Whether you are a farmer planning your next crop, a developer evaluating a
+              site, or an environmental researcher studying land use changes, our platform provides
+              instant, AI-powered insights to help you make informed decisions.
+            </p>
+            <p>
+              We combine satellite imagery, machine learning, and comprehensive data sources to
+              deliver accurate, actionable intelligence about any piece of land on Earth.
+            </p>
+          </div>
+
+          <div className="feature-detail">
+            <h2>How It Works</h2>
+            <p>
+              Simply select a land parcel on our interactive map by drawing a polygon. Our AI system
+              then analyzes multiple data sources including satellite imagery, weather patterns,
+              soil databases, and historical records to provide comprehensive insights.
+            </p>
+            <p>
+              Within seconds, you receive detailed information about vegetation health (NDVI), flood
+              and drought risks, soil quality, land use changes, and an overall trust score
+              indicating the reliability of the analysis.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer className="landing-footer">
+        <div className="footer-content">
+          <div className="footer-section">
+            <h3>Land Intelligence</h3>
+            <p>AI-Powered Land Analysis Platform</p>
+          </div>
+          <div className="footer-section">
+            <h4>Quick Links</h4>
+            <a href="#top">Home</a>
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+          </div>
+          <div className="footer-section">
+            <h4>Tools</h4>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/verify-land">Verify Land</Link>
+            <Link to="/surroundings">Surroundings</Link>
+          </div>
+          <div className="footer-copyright">
+            <p>&copy; 2026 Land Intelligence System. Built for Innovation.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+/* ===========================
+   Dashboard
+=========================== */
+function Dashboard() {
   const [selectedLand, setSelectedLand] = useState(null);
   const [insights, setInsights] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,17 +191,18 @@ export default function App() {
   const [showNDVI, setShowNDVI] = useState(false);
 
   const handleAnalyze = async () => {
-    if (!selectedLand?.centroid) return;
+    if (!selectedLand?.coordinates) return;
+
     setIsLoading(true);
     setError(null);
     setIsSuccess(false);
 
     try {
-      const data = await analyzeLand(selectedLand.centroid.lat, selectedLand.centroid.lon);
+      const data = await analyzeLand(selectedLand.coordinates);
       setInsights(data);
       setIsSuccess(true);
     } catch (err) {
-      setError(err?.message || err?.response?.data?.message || 'Analysis failed');
+      setError(err?.message || "Analysis failed");
     } finally {
       setIsLoading(false);
     }
@@ -32,35 +210,17 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-surface-50 font-sans">
-      <header className="bg-white border-b border-surface-200 shadow-sm">
-        <div className="max-w-[1800px] mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                />
-              </svg>
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-surface-900">Land Intelligence</h1>
-              <p className="text-sm text-surface-500">AI-Powered Land Analysis</p>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <main className="max-w-[1800px] mx-auto p-4 lg:p-6">
+        
+        {/* ⭐ FEATURE CARDS (FROM FRIEND) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <Link to="/verify-land" className="card">Land Verification</Link>
+          <Link to="/surroundings" className="card">Surroundings</Link>
+          <Link to="/safety" className="card">Safety Score</Link>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-          <div className="lg:col-span-2 min-h-[400px] lg:min-h-[calc(100vh-180px)]">
+          <div className="lg:col-span-2">
             <MapSelector
               selectedLand={selectedLand}
               onLandSelect={setSelectedLand}
@@ -72,35 +232,40 @@ export default function App() {
             />
           </div>
 
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl border border-surface-200 shadow-card p-6 h-full flex flex-col min-h-[360px] lg:min-h-0">
-              <h2 className="text-lg font-semibold text-surface-900 mb-4">Insights</h2>
+          <div>
+            <AnalyzeButton
+              onClick={handleAnalyze}
+              disabled={!selectedLand}
+              isLoading={isLoading}
+            />
 
-              <div className="mb-4">
-                <AnalyzeButton
-                  onClick={handleAnalyze}
-                  disabled={!selectedLand}
-                  isLoading={isLoading}
-                />
-              </div>
+            {error && <p className="text-red-500">{error}</p>}
 
-              {error && (
-                <p className="text-red-600 text-sm mb-3 bg-red-50 p-2 rounded-lg">
-                  {error}
-                </p>
-              )}
-
-              <div className="flex-1 overflow-y-auto scrollbar-thin">
-                <InsightsPanel
-                  insights={insights}
-                  isLoading={isLoading}
-                  isSuccess={isSuccess}
-                />
-              </div>
-            </div>
+            <InsightsPanel
+              insights={insights}
+              isLoading={isLoading}
+              isSuccess={isSuccess}
+            />
           </div>
         </div>
       </main>
     </div>
+  );
+}
+
+/* ===========================
+   ROUTER (MOST IMPORTANT PART)
+=========================== */
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+
+      {/* ⭐ NEW FEATURE ROUTES */}
+      <Route path="/verify-land" element={<VerifyLandUnified />} />
+      <Route path="/surroundings" element={<SurroundingsAnalysis />} />
+      <Route path="/safety" element={<SafetyScore />} />
+    </Routes>
   );
 }

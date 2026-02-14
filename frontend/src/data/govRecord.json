@@ -1,0 +1,64 @@
+{
+  "records": [
+    {
+      "surveyNumber": "45/2",
+      "state": "Tamil Nadu",
+      "district": "Coimbatore",
+      "landUse": "Agricultural"
+    },
+    {
+      "surveyNumber": "12/4",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "landUse": "Residential"
+    },
+    {
+      "surveyNumber": "89/1",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "landUse": "Industrial"
+    },
+    {
+      "surveyNumber": "67/3",
+      "state": "Karnataka",
+      "district": "Mysore",
+      "landUse": "Agricultural"
+    },
+    {
+      "surveyNumber": "23/5",
+      "state": "Telangana",
+      "district": "Hyderabad",
+      "landUse": "Commercial"
+    },
+    {
+      "surveyNumber": "56/8",
+      "state": "Tamil Nadu",
+      "district": "Madurai",
+      "landUse": "Industrial"
+    },
+    {
+      "surveyNumber": "34/6",
+      "state": "Andhra Pradesh",
+      "district": "Visakhapatnam",
+      "landUse": "Residential"
+    },
+    {
+      "surveyNumber": "78/2",
+      "state": "Telugu",
+      "district": "Tirupati",
+      "landUse": "Residential"
+    },
+    {
+      "surveyNumber": "91/4",
+      "state": "Karnataka",
+      "district": "Hubballi",
+      "landUse": "Commercial"
+    },
+    {
+      "surveyNumber": "45/7",
+      "state": "Tamil Nadu",
+      "district": "Salem",
+      "landUse": "Agricultural"
+    }
+  ]
+}

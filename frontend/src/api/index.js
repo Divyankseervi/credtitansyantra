@@ -1,14 +1,13 @@
 import { config } from '../config';
-import { mockAnalyzeLand } from './mock';
 import { analyzeLandApi } from './client';
 
 /**
- * Analyze land by centroid coordinates.
+ * Analyze land by polygon coordinates.
  * Uses mock or real API based on config.USE_MOCK_API
  */
-export async function analyzeLand(lat, lon) {
+export async function analyzeLand(coordinates) {
   if (config.USE_MOCK_API) {
-    return mockAnalyzeLand(lat, lon);
+    return mockAnalyzeLand(coordinates);
   }
-  return analyzeLandApi(lat, lon);
+  return analyzeLandApi(coordinates);
 }

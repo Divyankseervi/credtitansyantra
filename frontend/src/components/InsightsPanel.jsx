@@ -76,7 +76,15 @@ export default function InsightsPanel({ insights, isLoading, isSuccess }) {
     soil_health,
     change_detection,
     trust_score,
+    old_image_url,
+    new_image_url,
+    ndvi_url,
   } = insights;
+
+  const changeLabel =
+    typeof change_detection === 'string'
+      ? change_detection
+      : change_detection?.status || change_detection?.message || '—';
 
   const getRiskLevel = (risk) => {
     if (!risk) return 'low';
@@ -142,9 +150,73 @@ export default function InsightsPanel({ insights, isLoading, isSuccess }) {
         <div className="sm:col-span-2">
           <div className="bg-white rounded-xl p-4 border border-surface-200 shadow-card">
             <p className="text-sm font-medium text-surface-600 mb-1">Change Detection</p>
-            <p className="text-surface-900">{change_detection || '—'}</p>
+            <p className="text-surface-900">{changeLabel}</p>
           </div>
         </div>
+
+        {(old_image_url || new_image_url || ndvi_url) && (
+          <div className="sm:col-span-2">
+            <div className="bg-white rounded-xl p-4 border border-surface-200 shadow-card">
+              <p className="text-sm font-medium text-surface-600 mb-3">Satellite Imagery</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {old_image_url && (
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-surface-500 uppercase">Old Image</p>
+                    <a
+                      href={old_image_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="block"
+                    >
+                      <img
+                        src={old_image_url}
+                        alt="Old satellite"
+                        loading="lazy"
+                        className="w-full h-32 object-cover rounded-lg border border-surface-200"
+                      />
+                    </a>
+                  </div>
+                )}
+                {new_image_url && (
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-surface-500 uppercase">New Image</p>
+                    <a
+                      href={new_image_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="block"
+                    >
+                      <img
+                        src={new_image_url}
+                        alt="New satellite"
+                        loading="lazy"
+                        className="w-full h-32 object-cover rounded-lg border border-surface-200"
+                      />
+                    </a>
+                  </div>
+                )}
+                {ndvi_url && (
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-surface-500 uppercase">NDVI</p>
+                    <a
+                      href={ndvi_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="block"
+                    >
+                      <img
+                        src={ndvi_url}
+                        alt="NDVI map"
+                        loading="lazy"
+                        className="w-full h-32 object-cover rounded-lg border border-surface-200"
+                      />
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
